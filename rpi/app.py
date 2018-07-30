@@ -1,16 +1,25 @@
 import RPi.GPIO as GPIO
+import boto3
 import time
 
 
 SWITCH_PIN = 4
 LED_PIN = 22
 
+LAMBDA_FUNCTION = 'poo-button'
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(SWITCH_PIN, GPIO.IN)
 GPIO.setup(LED_PIN, GPIO.OUT)
 
+aws_lambda = boto3.client('lambda')
+
 
 def on_push():
+    GPIO.output(LED_PIN, True)
+    res = aws_lambda.invoke(FunctionName=LAMBDA_FUNCTION)
+    GPIO.output(LED_PIN, False)
+    assert res['StatusCode'] == 200
     blink(3)
 
 
