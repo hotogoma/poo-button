@@ -31,12 +31,11 @@ def blink(n=1, interval=.5):
         time.sleep(interval)
 
 
-if __name__ == '__main__':
-    try:
-        while True:
-            if GPIO.wait_for_edge(SWITCH_PIN, GPIO.RISING, timeout=1000):
-                on_push()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        GPIO.cleanup()
+try:
+    while True:
+        if GPIO.wait_for_edge(SWITCH_PIN, GPIO.RISING, timeout=1000):
+            on_push()
+except KeyboardInterrupt:
+    pass
+finally:
+    GPIO.cleanup()
