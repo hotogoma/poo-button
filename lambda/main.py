@@ -29,6 +29,17 @@ def post_to_slack():
     urllib.request.urlopen(req)
 
 
+def post_to_pixela():
+    url = '{}/decrement'.format(os.environ.get('PIXELA_GRAPH_URL'))
+    headers = {
+        'Content-Length': 0,
+        'X-User-Token': os.environ.get('PIXELA_API_TOKEN'),
+    }
+    req = urllib.request.Request(url, None, headers, method='put')
+    urllib.request.urlopen(req)
+
+
 def handler(event, context):
     save_to_db()
     post_to_slack()
+    post_to_pixela()
